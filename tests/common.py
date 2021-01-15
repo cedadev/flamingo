@@ -35,7 +35,6 @@ fixed_path_mappings =
 attr_defaults =
     frequency:mon
 facet_rule = project version_major version_minor variable
-mappings = ???
 
     """
     cfg = Template(cfg_templ).render(base_dir=TESTS_HOME)
