@@ -144,11 +144,10 @@ class Subset(Process):
             "area": parse_wps_input(request.inputs, 'area', default=None)
         }
 
-        # Let the director manage the processing or redirection to original files
         output_uris = run_subset(inputs)
 
         ml4 = build_metalink("subset-result", "Subsetting result as NetCDF files.",
-                             self.workdir, director.output_uris,
+                             self.workdir, output_uris,
                              as_urls=False)
 
         populate_response(response, 'subset', self.workdir, inputs, collection, ml4)
