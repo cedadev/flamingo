@@ -10,7 +10,6 @@ from ..utils.input_utils import parse_wps_input
 from ..utils.subset_utils import run_subset
 from ..utils.metalink_utils import build_metalink
 from ..utils.response_utils import populate_response
-#from ..director import wrap_director
 from ..provenance import Provenance
 
 LOGGER = logging.getLogger()
@@ -140,19 +139,17 @@ class Subset(Process):
             "collection": collection,
             "output_dir": self.workdir,
             "apply_fixes": parse_wps_input(request.inputs, 'apply_fixes', default=False),
-            "pre_checked": parse_wps_input(request.inputs, 'pre_checked', default=False),
-            "original_files": parse_wps_input(request.inputs, 'original_files', default=False),
             "time": parse_wps_input(request.inputs, 'time', default=None),
             "level": parse_wps_input(request.inputs, 'level', default=None),
             "area": parse_wps_input(request.inputs, 'area', default=None)
         }
 
         # Let the director manage the processing or redirection to original files
-        director = wrap_director(collection, inputs, run_subset)
+        output_uris = run_subset(inputs)
 
         ml4 = build_metalink("subset-result", "Subsetting result as NetCDF files.",
                              self.workdir, director.output_uris,
-                             as_urls=director.use_original_files)
+                             as_urls=False)
 
         populate_response(response, 'subset', self.workdir, inputs, collection, ml4)
         return response
