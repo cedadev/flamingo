@@ -10,7 +10,7 @@ from ..utils.input_utils import parse_wps_input
 from ..utils.subset_utils import run_subset
 from ..utils.metalink_utils import build_metalink
 from ..utils.response_utils import populate_response
-from ..director import wrap_director
+#from ..director import wrap_director
 from ..provenance import Provenance
 
 LOGGER = logging.getLogger()
