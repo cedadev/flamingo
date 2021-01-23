@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from pywps import get_ElementMakerForVersion
 from pywps.app.basic import get_xpath_ns
@@ -15,10 +16,13 @@ VERSION = "1.0.0"
 WPS, OWS = get_ElementMakerForVersion(VERSION)
 xpath_ns = get_xpath_ns(VERSION)
 
+MINI_CEDA_CACHE_DIR = Path.home() / ".mini-ceda-archive"
+MINI_CEDA_MASTER_DIR = os.path.join(MINI_CEDA_CACHE_DIR, "master")
+
 
 def write_roocs_cfg():
     cfg_templ = """[project:cru_ts]
-base_dir = {{ base_dir }}/badc/cru/data/cru_ts
+base_dir = {{ ceda_base_dir }}/archive/badc/cru/data/cru_ts
 file_name_template = {__derive__var_id}_{frequency}_{__derive__time_range}.{__derive__extension}
 fixed_path_mappings =
     cru_ts.4.04.cld:cru_ts_4.04/data/cld/*.nc

@@ -29,7 +29,7 @@ class SubsetCRUTS(Process):
                 "time",
                 "Time Period",
                 abstract="The time period to subset over separated by /"
-                "Example: 1860-01-01/1900-12-30",
+                "Example: 1960-01-01/2000-12-30",
                 data_type="string",
                 min_occurs=0,
                 max_occurs=1,
