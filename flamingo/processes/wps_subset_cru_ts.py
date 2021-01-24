@@ -1,14 +1,14 @@
 from daops.ops.subset import subset
 
 from pywps import LiteralInput, Process, FORMATS, ComplexOutput
-from pywps.app.Common import MetaData
+from pywps.app.Common import Metadata
 from pywps.app.exceptions import ProcessError
 from pywps.inout.outputs import MetaFile, MetaLink4
 
 from ..utils.input_utils import parse_wps_input
 
 class SubsetCRUTS(Process):
-    def __intit__(self):
+    def __init__(self):
         inputs = [
             LiteralInput(
                 "dataset_version",
