@@ -58,7 +58,7 @@ base_dir = NOT DEFINED YET
 base_dir = {{ base_dir }}/mini-esgf-data/test_data/group_workspaces/jasmin2/cp4cds1/vol1/data
 
     """
-    cfg = Template(cfg_templ).render(base_dir=TESTS_HOME)
+    cfg = Template(cfg_templ).render(base_dir=MINI_CEDA_MASTER_DIR)
     with open(ROOCS_CFG, "w") as fp:
         fp.write(cfg)
 
