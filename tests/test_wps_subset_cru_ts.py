@@ -19,9 +19,11 @@ def test_wps_subset_cru_ts(load_ceda_test_data):
     assert_response_success(resp)
     assert "meta4" in get_output(resp.xml)["output"]
 
+
 @pytest.mark.parametrize(
     "variable,start_date,end_date,area",
-    [('wet', '1951-01-01', '2005-12-15', ['1','1','300','89'])]
+    [('wet', '1951-01-01', '2005-12-15', ['1','1','300','89']),
+     ('tmn', '1980-02-02', '2011-05-20', ['1','20','50','80'])]
 )
 def test_wps_subset_cru_ts_check_nc_content(load_ceda_test_data, variable, start_date, end_date, area):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
