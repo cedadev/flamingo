@@ -87,8 +87,8 @@ def test_wps_subset_cru_ts_check_min_max(load_ceda_test_data, variable, start_da
                        lon=slice(min_lon, max_lon),
                        lat=slice(min_lat, max_lat))
 
-    max_cld = np.nanmax(ds_subset.variables[variable].values)
-    min_cld = np.nanmin(ds_subset.variables[variable].values)
+    max_cld = ds_subset[variable].max(skipna=True)
+    min_cld = ds_subset[variable].min(skipna=True)
 
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
     datainputs = f"dataset_version=cru_ts.4.04;variable={variable};time={start_date}/{end_date};area={','.join(area)}"
@@ -106,5 +106,5 @@ def test_wps_subset_cru_ts_check_min_max(load_ceda_test_data, variable, start_da
 
     wps_ds = xr.open_dataset(nc_output_file)
 
-    assert max_cld == np.nanmax(wps_ds.variables[variable].values)
-    assert min_cld == np.nanmin(wps_ds.variables[variable].values)
+    assert max_cld == wps_ds[variable].max(skipna=True)
+    assert min_cld == wps_ds[variable].min(skipna=True)
