@@ -9,6 +9,11 @@ import pytest
 import xarray as xr
 import xml.etree.ElementTree as ET
 
+TEST_SETS = [
+    ('wet', '1951-01-01', '2005-12-15', ['1','1','300','89']),
+    ('tmn', '1980-02-02', '2011-05-20', ['1','20','50','80'])
+]
+
 
 def test_wps_subset_cru_ts(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
@@ -22,8 +27,7 @@ def test_wps_subset_cru_ts(load_ceda_test_data):
 
 @pytest.mark.parametrize(
     "variable,start_date,end_date,area",
-    [('wet', '1951-01-01', '2005-12-15', ['1','1','300','89']),
-     ('tmn', '1980-02-02', '2011-05-20', ['1','20','50','80'])]
+    TEST_SETS
 )
 def test_wps_subset_cru_ts_check_nc_content(load_ceda_test_data, variable, start_date, end_date, area):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
@@ -60,7 +64,47 @@ def test_wps_subset_cru_ts_check_nc_content(load_ceda_test_data, variable, start
     max_lon = ds.variables['lon'].values[-1]
     max_lat = ds.variables['lat'].values[-1]
 
-    assert min_lon >= int(area[0])
-    assert min_lat >= int(area[1])
-    assert max_lon <= int(area[2])
-    assert max_lat <= int(area[3])
+    assert min_lon >= float(area[0])
+    assert min_lat >= float(area[1])
+    assert max_lon <= float(area[2])
+    assert max_lat <= float(area[3])
+
+
+@pytest.mark.parametrize(
+    "variable,start_date,end_date,area",
+    TEST_SETS
+)
+def test_wps_subset_cru_ts_check_min_max(load_ceda_test_data, variable, start_date, end_date, area):
+    data_path = f'/root/.mini-ceda-archive/master/archive/badc/cru/data/cru_ts/cru_ts_4.04/data/{variable}/*.nc'
+    ds = xr.open_mfdataset(data_path)
+
+    min_lon = float(area[0])
+    min_lat = float(area[1])
+    max_lon = float(area[2])
+    max_lat = float(area[3])
+
+    ds_subset = ds.sel(time=slice(start_date, end_date),
+                       lon=slice(min_lon, max_lon),
+                       lat=slice(min_lat, max_lat))
+
+    max_cld = np.nanmax(ds_subset.variables[variable].values)
+    min_cld = np.nanmin(ds_subset.variables[variable].values)
+
+    client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
+    datainputs = f"dataset_version=cru_ts.4.04;variable={variable};time={start_date}/{end_date};area={','.join(area)}"
+    resp = client.get(
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=subset_cru_ts&datainputs={datainputs}"
+    )
+    assert_response_success(resp)
+    output_file = get_output(resp.xml)["output"][7:] #trim off 'file://'
+
+    tree = ET.parse(output_file)
+    root = tree.getroot()
+
+    file_tag = root.find('{urn:ietf:params:xml:ns:metalink}file')
+    nc_output_file = file_tag.find('{urn:ietf:params:xml:ns:metalink}metaurl').text[7:] #trim off 'file://'
+
+    wps_ds = xr.open_dataset(nc_output_file)
+
+    assert max_cld == np.nanmax(wps_ds.variables[variable].values)
+    assert min_cld == np.nanmin(wps_ds.variables[variable].values)
