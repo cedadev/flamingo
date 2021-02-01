@@ -1,5 +1,6 @@
 import os
 import pytest
+import shutil
 
 from tests.common import write_roocs_cfg, MINI_CEDA_MASTER_DIR
 

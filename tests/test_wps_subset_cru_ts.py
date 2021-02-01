@@ -7,7 +7,7 @@ from flamingo.processes.wps_subset_cru_ts import SubsetCRUTS
 
 def test_wps_subset_cru_ts(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = "collection=cru_ts.4.04.wet;time=1951-01-01/2005-12-15;area=1,1,300,89"
+    datainputs = "dataset_version=cru_ts.4.04;variable=wet;time=1951-01-01/2005-12-15;area=1,1,300,89"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=subset_cru_ts&datainputs={datainputs}"
     )
