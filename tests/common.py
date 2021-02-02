@@ -39,7 +39,9 @@ attr_defaults =
     frequency:mon
 facet_rule = project version_major version_minor variable
     """
+
     cfg = Template(cfg_templ).render(ceda_base_dir=MINI_CEDA_MASTER_DIR)
+
     with open(ROOCS_CFG, "w") as fp:
         fp.write(cfg)
 
