@@ -1,11 +1,13 @@
 from daops.ops.subset import subset
 
-from pywps import LiteralInput, Process, FORMATS, ComplexOutput
+from pywps import LiteralInput, Process, FORMATS, Format, ComplexOutput
 from pywps.app.Common import Metadata
 from pywps.app.exceptions import ProcessError
-from pywps.inout.outputs import MetaFile, MetaLink4
 
 from ..utils.input_utils import parse_wps_input
+from ..utils.metalink_utils import build_metalink
+from ..utils.response_utils import populate_response
+
 
 class SubsetCRUTS(Process):
     def __init__(self):
@@ -51,8 +53,24 @@ class SubsetCRUTS(Process):
                 "METALINK v4 output",
                 abstract="Metalink v4 document with references to NetCDF files.",
                 as_reference=True,
-                supported_formats=[FORMATS.META4]
-            )
+                supported_formats=[FORMATS.META4],
+            ),
+            ComplexOutput(
+                "prov",
+                "Provenance",
+                abstract="Provenance document using W3C standard.",
+                as_reference=True,
+                supported_formats=[FORMATS.JSON],
+            ),
+            ComplexOutput(
+                "prov_plot",
+                "Provenance Diagram",
+                abstract="Provenance document as diagram.",
+                as_reference=True,
+                supported_formats=[
+                    Format("image/png", extension=".png", encoding="base64")
+                ],
+            ),
         ]
 
         super(SubsetCRUTS, self).__init__(
@@ -74,16 +92,23 @@ class SubsetCRUTS(Process):
 
         inputs = {
             "collection": collection,
-            "output_dir": self.workdir,
             "time": parse_wps_input(request.inputs, 'time', default=None),
-            "area": parse_wps_input(request.inputs, 'area', default=None)
+            "area": parse_wps_input(request.inputs, 'area', default=None),
+            "apply_fixes": False,
+            "output_dir": self.workdir,
+            "file_namer": "simple",
+            "output_type": "netcdf"
         }
 
         output_uris = subset(**inputs).file_uris
 
-        ml4 = build_metalink("subset-result", "Subsetting result as NetCDF files.",
-                             self.workdir, output_uris,
-                             as_urls=False)
+        ml4 = build_metalink(
+            "subset-cru_ts-result",
+            "Subsetting result as NetCDF files.",
+            self.workdir,
+            output_uris
+        )
 
-        populate_response(response, 'subset', self.workdir, inputs, collection, ml4)
+        populate_response(response, "subset", self.workdir, inputs, collection, ml4)
+
         return response
