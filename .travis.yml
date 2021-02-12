@@ -30,17 +30,17 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
   # Prepare env with Python version
-  - conda create -n rook -c conda-forge python=$TRAVIS_PYTHON_VERSION
+  - conda create -n flamingo -c conda-forge python=$TRAVIS_PYTHON_VERSION
   # Update now the env with our environment
   - conda env update -f environment.yml
   # Update env for building docs
   # - conda env update -f environment-docs.yml
-  - source activate rook
+  - source activate flamingo 
   # Packages for testing, generating docs and installing WPS
   - make develop
 before_script:
   # Start WPS service on port 5000 on 0.0.0.0
-  - rook start --daemon --bind-host 0.0.0.0 --port 5000
+  - flamingo start --daemon --bind-host 0.0.0.0 --port 5000
   - sleep 2
 script:
   - pytest

@@ -6,7 +6,7 @@ Lead
 ----
 
 
-* Carsten Ehbrecht ehbrecht@dkrz.de
+* Jonathan Haigh jonathan.haigh@stfc.ac.uk
 
 Contributors
 ------------
