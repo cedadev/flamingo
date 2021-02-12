@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# rook documentation build configuration file, created by
+# flamingo documentation build configuration file, created by
 # sphinx-quickstart on Fri Jun  9 13:47:02 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -21,9 +21,9 @@
 import os
 import sys
 
-# Add rook to sys.path to avoid having to full
-# install rook for autodoc.
-# Full install of rook will burst memory limit on ReadTheDocs.
+# Add flamingo to sys.path to avoid having to full
+# install flamingo for autodoc.
+# Full install of flamingo will burst memory limit on ReadTheDocs.
 sys.path.insert(0, os.path.abspath("../../"))
 
 
@@ -114,7 +114,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "rook"
+project = "flamingo"
 copyright = "2020, Carsten Ehbrecht"
 author = "Carsten Ehbrecht"
 
@@ -182,7 +182,7 @@ html_static_path = ["_static"]
 # -- Options for HTMLHelp output ---------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "rookdoc"
+htmlhelp_basename = "flamingodoc"
 
 
 # -- Options for LaTeX output ------------------------------------------
@@ -208,8 +208,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "rook.tex",
-        "rook Documentation",
+        "flamingo.tex",
+        "flamingo Documentation",
         "Carsten Ehbrecht",
         "manual",
     ),
@@ -223,8 +223,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "rook",
-        "rook Documentation",
+        "flamingo",
+        "flamingo Documentation",
         [author],
         1,
     )
@@ -239,10 +239,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "rook",
-        "rook Documentation",
+        "flamingo",
+        "flamingo Documentation",
         author,
-        "rook",
+        "flamingo",
         "A WPS service for roocs.",
         "Miscellaneous",
     ),

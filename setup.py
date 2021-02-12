@@ -13,7 +13,7 @@ CHANGES = open(os.path.join(here, "CHANGES.rst")).read()
 REQUIRES_PYTHON = ">=3.6.0"
 
 about = {}
-with open(os.path.join(here, "rook", "__version__.py"), "r") as f:
+with open(os.path.join(here, "flamingo", "__version__.py"), "r") as f:
     exec(f.read(), about)
 
 reqs = [line.strip() for line in open("requirements.txt")]
@@ -36,18 +36,18 @@ classifiers = [
 ]
 
 setup(
-    name="rook",
+    name="flamingo",
     version=about["__version__"],
     description="A WPS service for roocs.",
     long_description=README + "\n\n" + CHANGES,
     long_description_content_type="text/x-rst",
     author=about["__author__"],
     author_email=about["__email__"],
-    url="https://github.com/roocs/rook",
+    url="https://github.com/cedadev/flamingo",
     python_requires=REQUIRES_PYTHON,
     classifiers=classifiers,
     license="Apache Software License 2.0",
-    keywords="wps pywps birdhouse rook",
+    keywords="wps pywps birdhouse flamingo",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -62,7 +62,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "rook=rook.cli:cli",
+            "flamingo=flamingo.cli:cli",
         ]
     },
 )

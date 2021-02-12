@@ -3,8 +3,8 @@ Notebooks
 =========
 
 
-You can use the rooki_ Python client to use the rook service.
+You can use the flamingoi_ Python client to use the flamingo service.
 See the online notebooks_ with examples.
 
-.. _rooki: https://github.com/roocs/rooki
-.. _notebooks: https://nbviewer.jupyter.org/github/roocs/rooki/tree/master/notebooks/
+.. _flamingoi: https://github.com/cedadev/flamingoi
+.. _notebooks: https://nbviewer.jupyter.org/github/roocs/flamingoi/tree/master/notebooks/

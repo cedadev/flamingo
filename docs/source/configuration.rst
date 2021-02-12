@@ -7,15 +7,15 @@ Command-line options
 --------------------
 
 You can overwrite the default `PyWPS`_ configuration by using command-line options.
-See the rook help which options are available::
+See the flamingo help which options are available::
 
-    $ rook start --help
+    $ flamingo start --help
     --hostname HOSTNAME        hostname in PyWPS configuration.
     --port PORT                port in PyWPS configuration.
 
 Start service with different hostname and port::
 
-    $ rook start --hostname localhost --port 5001
+    $ flamingo start --hostname localhost --port 5001
 
 Use a custom configuration file
 -------------------------------
@@ -28,7 +28,7 @@ For example change the hostname (*demo.org*) and logging level:
 
 .. code-block:: console
 
-   $ cd rook
+   $ cd flamingo
    $ vim etc/custom.cfg
    $ cat etc/custom.cfg
    [server]
@@ -43,7 +43,7 @@ Start the service with your custom configuration:
 .. code-block:: console
 
    # start the service with this configuration
-   $ rook start -c etc/custom.cfg
+   $ flamingo start -c etc/custom.cfg
 
 
 .. _PyWPS: http://pywps.org/

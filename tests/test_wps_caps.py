@@ -1,7 +1,7 @@
 from pywps import Service
 
 from .common import client_for
-from rook.processes import processes
+from flamingo.processes import processes
 
 
 def test_wps_caps():
@@ -11,7 +11,5 @@ def test_wps_caps():
         "/wps:Capabilities" "/wps:ProcessOfferings" "/wps:Process" "/ows:Identifier"
     )
     assert sorted(names.split()) == [
-        "average",
-        "orchestrate",
         "subset",
     ]

@@ -1,6 +1,6 @@
 # Configuration
 APP_ROOT := $(abspath $(lastword $(MAKEFILE_LIST))/..)
-APP_NAME := rook
+APP_NAME := flamingo
 
 WPS_URL = http://localhost:5000
 

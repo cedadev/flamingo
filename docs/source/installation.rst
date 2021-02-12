@@ -17,12 +17,12 @@ Install from Conda
 Install from GitHub
 -------------------
 
-Check out code from the rook GitHub repo and start the installation:
+Check out code from the flamingo GitHub repo and start the installation:
 
 .. code-block:: console
 
-   $ git clone https://github.com/roocs/rook.git
-   $ cd rook
+   $ git clone https://github.com/cedadev/flamingo.git
+   $ cd flamingo
 
 Get the submodules with ESGF test data:
 
@@ -30,14 +30,14 @@ Get the submodules with ESGF test data:
 
    $ git submodule update --init
 
-Create Conda environment named `rook`:
+Create Conda environment named `flamingo`:
 
 .. code-block:: console
 
    $ conda env create -f environment.yml
-   $ source activate rook
+   $ source activate flamingo
 
-Install rook app:
+Install flamingo app:
 
 .. code-block:: console
 
@@ -53,19 +53,19 @@ For development you can use this command:
   OR
   $ make develop
 
-Start rook PyWPS service
+Start flamingo PyWPS service
 ------------------------
 
-After successful installation you can start the service using the ``rook`` command-line.
+After successful installation you can start the service using the ``flamingo`` command-line.
 
 .. code-block:: console
 
-   $ rook --help # show help
-   $ rook start  # start service with default configuration
+   $ flamingo --help # show help
+   $ flamingo start  # start service with default configuration
 
    OR
 
-   $ rook start --daemon # start service as daemon
+   $ flamingo start --daemon # start service as daemon
    loading configuration
    forked process id: 42
 
@@ -101,19 +101,19 @@ You can also use the ``Makefile`` to start and stop the service:
   $ make stop
 
 
-Run rook as Docker container
+Run flamingo as Docker container
 ----------------------------
 
-You can also run rook as a Docker container.
+You can also run flamingo as a Docker container.
 
 .. warning::
 
   TODO: Describe Docker container support.
 
-Use Ansible to deploy rook on your System
+Use Ansible to deploy flamingo on your System
 -----------------------------------------
 
-Use the `Ansible playbook`_ for PyWPS to deploy rook on your system.
+Use the `Ansible playbook`_ for PyWPS to deploy flamingo on your system.
 
 
 .. _Ansible playbook: http://ansible-wps-playbook.readthedocs.io/en/latest/index.html

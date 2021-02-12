@@ -2,7 +2,7 @@ version: '3'
 services:
   wps:
     build: .
-    image: roocs/rook
+    image: roocs/flamingo
     ports:
       - "5000:5000"
 

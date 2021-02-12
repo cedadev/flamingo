@@ -1,26 +1,26 @@
-rook
+flamingo
 ====
 
-.. image:: https://readthedocs.org/projects/rook-wps/badge/?version=latest
-   :target: https://rook-wps.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/flamingo-wps/badge/?version=latest
+   :target: https://flamingo-wps.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-.. image:: https://travis-ci.org/roocs/rook.svg?branch=master
-   :target: https://travis-ci.org/roocs/rook
+.. image:: https://travis-ci.org/roocs/flamingo.svg?branch=master
+   :target: https://travis-ci.org/roocs/flamingo
    :alt: Travis Build
 
-.. image:: https://img.shields.io/github/license/roocs/rook.svg
-    :target: https://github.com/roocs/rook/blob/master/LICENSE.txt
+.. image:: https://img.shields.io/github/license/roocs/flamingo.svg
+    :target: https://github.com/cedadev/flamingo/blob/master/LICENSE.txt
     :alt: GitHub license
 
 
-rook (the bird)
-  *The rook belongs to the crow family ...*
+flamingo (the bird)
+  *The flamingo belongs to the crow family ...*
 
-rook
+flamingo
   *Remote Operations On Klimadaten.*
 
-Rook is a Web Processing Service (WPS) of the roocs project
+flamingo is a Web Processing Service (WPS) of the roocs project
 to allow remote operations like subsetting on climate model data.
 This service provides a one-to-one mapping to the operations
 available in the daops_ library based on xarray.
@@ -28,11 +28,11 @@ available in the daops_ library based on xarray.
 Documentation
 -------------
 
-Learn more about rook in its official documentation at
-https://rook-wps.readthedocs.io.
+Learn more about flamingo in its official documentation at
+https://flamingo-wps.readthedocs.io.
 
 Submit bug reports, questions and feature requests at
-https://github.com/roocs/rook/issues
+https://github.com/cedadev/flamingo/issues
 
 Contributing
 ------------
@@ -53,6 +53,6 @@ This package was created with Cookiecutter_ and the `bird-house/cookiecutter-bir
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`bird-house/cookiecutter-birdhouse`: https://github.com/bird-house/cookiecutter-birdhouse
-.. _`Developer Guide`: https://rook-wps.readthedocs.io/en/latest/dev_guide.html
-.. _bumpversion: https://rook-wps.readthedocs.io/en/latest/dev_guide.html#bump-a-new-version
+.. _`Developer Guide`: https://flamingo-wps.readthedocs.io/en/latest/dev_guide.html
+.. _bumpversion: https://flamingo-wps.readthedocs.io/en/latest/dev_guide.html#bump-a-new-version
 .. _daops: https://github.com/roocs/daops

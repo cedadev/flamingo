@@ -1,4 +1,4 @@
-name: rook
+name: flamingo
 channels:
 - conda-forge
 - defaults
