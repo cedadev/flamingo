@@ -1,2 +1,0 @@
-# flamingo
-Flamingo WPS
