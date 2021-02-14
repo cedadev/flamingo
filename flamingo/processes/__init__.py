@@ -1,5 +1,5 @@
-from .wps_subset import Subset
+from .wps_subset_cru_ts import SubsetCRUTS
 
 processes = [
-    Subset(),
+    SubsetCRUTS(),
 ]
