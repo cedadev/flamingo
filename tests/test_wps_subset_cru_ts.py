@@ -19,7 +19,7 @@ def test_wps_subset_cru_ts(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
     datainputs = "dataset_version=cru_ts.4.04;variable=wet;time=1951-01-01/2005-12-15;area=1,1,300,89"
     resp = client.get(
-        f"?service=WPS&request=Execute&version=1.0.0&identifier=subset_cru_ts&datainputs={datainputs}"
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
     assert_response_success(resp)
     assert "meta4" in get_output(resp.xml)["output"]
@@ -33,7 +33,7 @@ def test_wps_subset_cru_ts_check_nc_content(load_ceda_test_data, variable, start
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
     datainputs = f"dataset_version=cru_ts.4.04;variable={variable};time={start_date}/{end_date};area={','.join(area)}"
     resp = client.get(
-        f"?service=WPS&request=Execute&version=1.0.0&identifier=subset_cru_ts&datainputs={datainputs}"
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
     assert_response_success(resp)
     output_file = get_output(resp.xml)["output"][7:] #trim off 'file://'
@@ -93,7 +93,7 @@ def test_wps_subset_cru_ts_check_min_max(load_ceda_test_data, variable, start_da
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
     datainputs = f"dataset_version=cru_ts.4.04;variable={variable};time={start_date}/{end_date};area={','.join(area)}"
     resp = client.get(
-        f"?service=WPS&request=Execute&version=1.0.0&identifier=subset_cru_ts&datainputs={datainputs}"
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
     assert_response_success(resp)
     output_file = get_output(resp.xml)["output"][7:] #trim off 'file://'
@@ -105,6 +105,8 @@ def test_wps_subset_cru_ts_check_min_max(load_ceda_test_data, variable, start_da
     nc_output_file = file_tag.find('{urn:ietf:params:xml:ns:metalink}metaurl').text[7:] #trim off 'file://'
 
     wps_ds = xr.open_dataset(nc_output_file)
+
+    assert ds_subset[variable].lat.values == wps_ds[variable].lon.values
 
     assert max_cld == wps_ds[variable].max(skipna=True)
     assert min_cld == wps_ds[variable].min(skipna=True)

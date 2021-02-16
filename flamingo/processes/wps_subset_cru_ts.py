@@ -75,14 +75,21 @@ class SubsetCRUTS(Process):
 
         super(SubsetCRUTS, self).__init__(
             self._handler,
-            identifier="subset_cru_ts",
-            title="Subset CRU_TS",
-            abstract="Run subsetting on cru ts data",
-            version="1.0",
+            identifier="SubsetCRUTimeSeries",
+            title="Subset CRU Time Series",
+            abstract="Run subsetting on CRU Time Series data",
+            keywords=['subset', 'climate', 'research', 'unit', 'time', 'series', 'data'],
+            metadata=[
+                Metadata('CEDA WPS UI', 'https://ceda-wps-ui.ceda.ac.uk'),
+                Metadata('CEDA WPS', 'https://ceda-wps.ceda.ac.uk'),
+                Metadata('Disclaimer', 'https://help.ceda.ac.uk/article/4642-disclaimer')
+            ],
+            version='1.0.0',
             inputs=inputs,
-            outputs=outputs
+            outputs=outputs,
+            store_supported=True,
+            status_supported=True
         )
-
 
     def _handler(self, request, response):
         dataset_version = parse_wps_input(request.inputs, 'dataset_version', must_exist=True)
