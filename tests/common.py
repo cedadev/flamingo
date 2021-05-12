@@ -17,7 +17,7 @@ WPS, OWS = get_ElementMakerForVersion(VERSION)
 xpath_ns = get_xpath_ns(VERSION)
 
 MINI_CEDA_CACHE_DIR = Path.home() / ".mini-ceda-archive"
-MINI_CEDA_MASTER_DIR = os.path.join(MINI_CEDA_CACHE_DIR, "master")
+MINI_CEDA_CACHE_BRANCH = "main"
 
 
 def write_roocs_cfg():
@@ -40,7 +40,7 @@ attr_defaults =
 facet_rule = project version_major version_minor variable
     """
 
-    cfg = Template(cfg_templ).render(ceda_base_dir=MINI_CEDA_MASTER_DIR)
+    cfg = Template(cfg_templ).render(ceda_base_dir=(MINI_CEDA_CACHE_DIR / MINI_CEDA_CACHE_BRANCH))
 
     with open(ROOCS_CFG, "w") as fp:
         fp.write(cfg)

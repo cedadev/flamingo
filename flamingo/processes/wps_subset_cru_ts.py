@@ -101,7 +101,7 @@ class SubsetCRUTS(Process):
             "collection": collection,
             "time": parse_wps_input(request.inputs, 'time', default=None),
             "area": parse_wps_input(request.inputs, 'area', default=None),
-            "apply_fixes": False,
+#            "apply_fixes": False,
             "output_dir": self.workdir,
             "file_namer": "simple",
             "output_type": "netcdf"

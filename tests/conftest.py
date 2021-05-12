@@ -4,7 +4,7 @@ import shutil
 
 from git import Repo
 
-from tests.common import write_roocs_cfg, MINI_CEDA_CACHE_DIR
+from tests.common import write_roocs_cfg, MINI_CEDA_CACHE_DIR, MINI_CEDA_CACHE_BRANCH
 
 CEDA_TEST_DATA_REPO_URL = "https://github.com/cedadev/mini-ceda-archive"
 
@@ -16,8 +16,8 @@ def load_ceda_test_data():
     This fixture ensures that the required test data repository
     has been cloned to the cache directory within the home directory.
     """
-    branch = "master"
-    target = os.path.join(MINI_ESGF_CACHE_DIR, branch)
+    branch = MINI_CEDA_CACHE_BRANCH
+    target = os.path.join(MINI_CEDA_CACHE_DIR, branch)
 
     if not os.path.isdir(MINI_CEDA_CACHE_DIR):
         os.makedirs(MINI_CEDA_CACHE_DIR)

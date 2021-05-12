@@ -1,7 +1,8 @@
 from pywps import Service
 from pywps.tests import client_for, assert_response_success, assert_process_exception
 
-from .common import get_output, PYWPS_CFG
+from .common import get_output, PYWPS_CFG, MINI_CEDA_CACHE_DIR, MINI_CEDA_CACHE_BRANCH
+
 from flamingo.processes.wps_subset_cru_ts import SubsetCRUTS
 
 import numpy as np
@@ -10,7 +11,7 @@ import xarray as xr
 import xml.etree.ElementTree as ET
 
 TEST_SETS = [
-    ('wet', '1951-01-01', '2005-12-15', ['1','1','300','89']),
+    ('wet', '1951-01-01', '2005-12-15', ['-85','1','180','89']),
     ('tmn', '1980-02-02', '2011-05-20', ['1','20','50','80'])
 ]
 
@@ -75,7 +76,7 @@ def test_wps_subset_cru_ts_check_nc_content(load_ceda_test_data, variable, start
     TEST_SETS
 )
 def test_wps_subset_cru_ts_check_min_max(load_ceda_test_data, variable, start_date, end_date, area):
-    data_path = f'/root/.mini-ceda-archive/master/archive/badc/cru/data/cru_ts/cru_ts_4.04/data/{variable}/*.nc'
+    data_path = f'{MINI_CEDA_CACHE_DIR}/{MINI_CEDA_CACHE_BRANCH}/archive/badc/cru/data/cru_ts/cru_ts_4.04/data/{variable}/*.nc'
     ds = xr.open_mfdataset(data_path)
 
     min_lon = float(area[0])
@@ -106,7 +107,14 @@ def test_wps_subset_cru_ts_check_min_max(load_ceda_test_data, variable, start_da
 
     wps_ds = xr.open_dataset(nc_output_file)
 
-    assert ds_subset[variable].lat.values == wps_ds[variable].lon.values
+    if variable == 'wet':
+        expected_lons = [-79.75, -29.75, 20.25, 70.25, 120.25, 170.25]
+    elif variable == 'tmn':
+        expected_lons = [20.25]
+    else:
+        raise Exception(f'No expected longitudes rule in test for variable: {variable}')
+
+    assert wps_ds[variable].lon.values.tolist() == expected_lons
 
     assert max_cld == wps_ds[variable].max(skipna=True)
     assert min_cld == wps_ds[variable].min(skipna=True)
