@@ -13,9 +13,9 @@ dependencies:
 - pytest
 - rtree>=0.9
 - cfunits
-- cftime>=1.2.1
-- intake
-- intake-esm
+- cftime>=1.3.1
+#- intake
+#- intake-esm
 - udunits2>=2.2
 - xarray>=0.16
 - dask>=2.26
@@ -30,3 +30,4 @@ dependencies:
 # tests
 - pytest
 - python-dateutil>=2.8.1
+- gitpython
