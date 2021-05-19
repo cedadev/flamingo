@@ -1,7 +1,7 @@
 from pywps import Service
 from pywps.tests import client_for, assert_response_success, assert_process_exception
 
-from .common import get_output, PYWPS_CFG, MINI_CEDA_CACHE_DIR, MINI_CEDA_CACHE_BRANCH
+from tests.common import get_output, PYWPS_CFG, MINI_CEDA_CACHE_DIR, MINI_CEDA_CACHE_BRANCH
 
 from flamingo.processes.wps_subset_cru_ts import SubsetCRUTS, VARIABLE_ALLOWED_VALUES
 
@@ -28,7 +28,7 @@ TEST_SETS = [
 ]
 
 
-def test_wps_subset_cru_ts_nc(load_ceda_test_data):
+def test_wps_subset_cru_ts(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
     datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=netcdf"
     resp = client.get(

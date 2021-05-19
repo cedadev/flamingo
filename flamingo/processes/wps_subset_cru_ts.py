@@ -42,7 +42,7 @@ class SubsetCRUTS(Process):
                 "Dataset Version",
                 abstract="The variable to data over.",
                 data_type="string",
-                allowed_values=list(DATASET_ALLOWED_VALUES),
+                allowed_values=list(DATASET_ALLOWED_VALUES.keys()),
                 min_occurs=1,
                 max_occurs=1,
             ),
