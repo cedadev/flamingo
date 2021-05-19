@@ -24,12 +24,6 @@ Check out code from the flamingo GitHub repo and start the installation:
    $ git clone https://github.com/cedadev/flamingo.git
    $ cd flamingo
 
-Get the submodules with ESGF test data:
-
-.. code-block:: console
-
-   $ git submodule update --init
-
 Create Conda environment named `flamingo`:
 
 .. code-block:: console

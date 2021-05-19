@@ -5,6 +5,7 @@ psutil
 networkx
 xarray>=0.15
 dask[complete]
+nappy
 netcdf4
 python-dateutil>=2.8.1
 #daops>=0.3.0
