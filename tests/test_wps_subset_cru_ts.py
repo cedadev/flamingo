@@ -18,7 +18,7 @@ TEST_SETS = [
 
 def test_wps_subset_cru_ts(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = "dataset_version=cru_ts.4.04;variable=wet;time=1951-01-01/2005-12-15;area=1,1,300,89"
+    datainputs = "dataset_version=cru_ts.4.04;variable=wet;timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=netcdf"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
@@ -32,7 +32,7 @@ def test_wps_subset_cru_ts(load_ceda_test_data):
 )
 def test_wps_subset_cru_ts_check_nc_content(load_ceda_test_data, variable, start_date, end_date, area):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = f"dataset_version=cru_ts.4.04;variable={variable};time={start_date}/{end_date};area={','.join(area)}"
+    datainputs = f"dataset_version=cru_ts.4.04;variable={variable};timeDateRange={start_date}/{end_date};area={','.join(area)};output_type=netcdf"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
@@ -92,7 +92,7 @@ def test_wps_subset_cru_ts_check_min_max(load_ceda_test_data, variable, start_da
     min_cld = ds_subset[variable].min(skipna=True)
 
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = f"dataset_version=cru_ts.4.04;variable={variable};time={start_date}/{end_date};area={','.join(area)}"
+    datainputs = f"dataset_version=cru_ts.4.04;variable={variable};timeDateRange={start_date}/{end_date};area={','.join(area)};output_type=netcdf"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
