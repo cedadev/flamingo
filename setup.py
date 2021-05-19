@@ -56,6 +56,7 @@ setup(
         "roocs-utils @ git+https://github.com/roocs/roocs-utils.git",
         "clisops @ git+https://github.com/roocs/clisops.git",
         "daops @ git+https://github.com/roocs/daops.git",
+        "nappy @ git+https://github.com/cedadev/nappy.git",
     ],
     extras_require={
         "dev": dev_reqs,  # pip install ".[dev]"
