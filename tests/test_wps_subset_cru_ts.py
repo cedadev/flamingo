@@ -40,6 +40,16 @@ def test_wps_subset_cru_ts(load_ceda_test_data):
 
 def test_wps_subset_cru_ts_csv(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
+    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=near-surface temperature minimum (degrees Celsius);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
+    resp = client.get(
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
+    )
+    assert_response_success(resp)
+    assert "meta4" in get_output(resp.xml)["output"]
+
+
+def test_wps_subset_cru_ts_csv_FAILS_WITH_wet_VAR(load_ceda_test_data):
+    client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
     datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
