@@ -1,4 +1,7 @@
+import os
+
 from daops.ops.subset import subset
+from nappy.nc_interface.xarray_to_na import XarrayDatasetToNA
 
 from pywps import LiteralInput, Process, FORMATS, Format, ComplexOutput
 from pywps import (
@@ -41,18 +44,18 @@ class SubsetCRUTS(Process):
             LiteralInput(
                 "dataset_version",
                 "Dataset Version",
-                abstract="The dataset to subset. Example: cru_ts.4.04",
+                abstract="The dataset to subset",
                 data_type="string",
-                allowed_values=list(DATASET_ALLOWED_VALUES.values()),
+                allowed_values=list(DATASET_ALLOWED_VALUES.keys()),
                 min_occurs=1,
                 max_occurs=1,
             ),
             LiteralInput(
                 "variable",
                 "Variable",
-                abstract="The variable to subset: Example: tmn",
+                abstract="The variable to subset",
                 data_type="string",
-                allowed_values=list(VARIABLE_ALLOWED_VALUES.values()),
+                allowed_values=list(VARIABLE_ALLOWED_VALUES.keys()),
                 min_occurs=1,
             ),
             LiteralInput(
@@ -64,12 +67,11 @@ class SubsetCRUTS(Process):
                 min_occurs=0,
                 max_occurs=1,
             ),
-            LiteralInput(
+            BoundingBoxInput(
                 "area",
                 "Area",
-                abstract="The area to subset over as 4 comma separated values."
-                "Example: 0.,49.,10.,65",
-                data_type="string",
+                abstract="The area to subset over.",
+                crss=["-180.0, -90.0, 180.0, 90.0,epsg:4326"],
                 min_occurs=0,
                 max_occurs=1,
             ),
@@ -115,7 +117,15 @@ class SubsetCRUTS(Process):
             identifier="SubsetCRUTimeSeries",
             title="Subset CRU Time Series",
             abstract="Run subsetting on CRU Time Series data",
-            keywords=["subset", "climate", "research", "unit", "time", "series", "data"],
+            keywords=[
+                "subset",
+                "climate",
+                "research",
+                "unit",
+                "time",
+                "series",
+                "data",
+            ],
             metadata=[
                 Metadata("CEDA WPS UI", "https://ceda-wps-ui.ceda.ac.uk"),
                 Metadata("CEDA WPS", "https://ceda-wps.ceda.ac.uk"),
@@ -129,14 +139,18 @@ class SubsetCRUTS(Process):
         )
 
     def _handler(self, request, response):
-        #dataset_version = DATASET_ALLOWED_VALUES[
-        dataset_version = \
+        dataset_version = DATASET_ALLOWED_VALUES[
             parse_wps_input(request.inputs, "dataset_version", must_exist=True)
-        #]
-        #variable = VARIABLE_ALLOWED_VALUES[
-        variable = \
+        ]
+        variable = VARIABLE_ALLOWED_VALUES[
             parse_wps_input(request.inputs, "variable", must_exist=True)
-        #]
+        ]
+
+        output_format = parse_wps_input(request.inputs, "output_type", must_exist=True)
+
+        output_type = output_format
+        if output_format == "csv":
+            output_type = "xarray" 
 
         collection = f"{dataset_version}.{variable}"
 
@@ -144,16 +158,33 @@ class SubsetCRUTS(Process):
             "collection": collection,
             "time": parse_wps_input(request.inputs, "timeDateRange", default=None),
             "area": parse_wps_input(request.inputs, "area", default=None),
-#            "apply_fixes": False,
+            #            "apply_fixes": False,
             "output_dir": self.workdir,
             "file_namer": "simple",
-            "output_type": parse_wps_input(
-                request.inputs, "output_type", must_exist=True
-            ),
+            "output_type": output_type
         }
 
-        output_uris = subset(**inputs).file_uris
+        results = subset(**inputs)
 
+        if output_type == "netcdf":
+            output_uris = results.file_uris
+        else:
+            # If CSV, then write them out using Nappy
+            output_uris = []
+            i = 1
+
+            for result_list in results._results.values():
+              
+                for ds in result_list:
+                    xr_to_na = XarrayDatasetToNA(ds) 
+                    xr_to_na.convert()
+
+                    output_file = os.path.join(self.workdir, f"output_{i:02d}.csv")
+                    xr_to_na.writeNAFiles(output_file, delimiter=",", float_format="%g")
+                    output_uris.extend(xr_to_na.output_files_written)
+
+                    i += 1
+                
         ml4 = build_metalink(
             "subset-cru_ts-result",
             "Subsetting result as NetCDF files.",
