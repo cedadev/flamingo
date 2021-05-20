@@ -3,7 +3,6 @@ import os
 from daops.ops.subset import subset
 from nappy.nc_interface.xarray_to_na import XarrayDatasetToNA
 
-from pywps import LiteralInput, Process, FORMATS, Format, ComplexOutput
 from pywps import (
     BoundingBoxInput,
     LiteralInput,
@@ -19,6 +18,24 @@ from pywps.app.exceptions import ProcessError
 from ..utils.input_utils import parse_wps_input
 from ..utils.metalink_utils import build_metalink
 from ..utils.response_utils import populate_response
+
+DATASET_ALLOWED_VALUES = {
+    "Climatic Research Unit (CRU) TS (time-series) datasets 4.04": "cru_ts.4.04"
+}
+
+VARIABLE_ALLOWED_VALUES = {
+    "precipitation (mm/month)": "pre",
+    "near-surface temperature (degrees Celsius)": "tmp",
+    "near-surface temperature maximum (degrees Celsius)": "tmx",
+    "potential evapotranspiration (mm/day)": "pet",
+    "ground frost frequency (days)": "frs",
+    "cloud cover (percentage)": "cld",
+    "wet day frequency (days)": "wet",
+    "diurnal temperature range (degrees Celsius)": "dtr",
+    "vapour pressure (hPa)": "vap",
+    "near-surface temperature minimum (degrees Celsius)": "tmn",
+}
+
 
 DATASET_ALLOWED_VALUES = {
     "Climatic Research Unit (CRU) TS (time-series) datasets 4.04": "cru_ts.4.04"
@@ -61,9 +78,9 @@ class SubsetCRUTS(Process):
             LiteralInput(
                 "timeDateRange",
                 "Time Period",
-                abstract="The time period to subset over separated by /"
-                "Example: 1960-01-01/2000-12-30",
+                abstract="The time period to subset over.",
                 data_type="string",
+                default="1901-01-16/2019-12-16",
                 min_occurs=0,
                 max_occurs=1,
             ),
@@ -129,13 +146,15 @@ class SubsetCRUTS(Process):
             metadata=[
                 Metadata("CEDA WPS UI", "https://ceda-wps-ui.ceda.ac.uk"),
                 Metadata("CEDA WPS", "https://ceda-wps.ceda.ac.uk"),
-                Metadata("Disclaimer", "https://help.ceda.ac.uk/article/4642-disclaimer")
+                Metadata(
+                    "Disclaimer", "https://help.ceda.ac.uk/article/4642-disclaimer"
+                ),
             ],
             version="1.0.0",
             inputs=inputs,
             outputs=outputs,
             store_supported=True,
-            status_supported=True
+            status_supported=True,
         )
 
     def _handler(self, request, response):
@@ -161,6 +180,7 @@ class SubsetCRUTS(Process):
             #            "apply_fixes": False,
             "output_dir": self.workdir,
             "file_namer": "simple",
+
             "output_type": output_type
         }
 
@@ -189,7 +209,7 @@ class SubsetCRUTS(Process):
             "subset-cru_ts-result",
             "Subsetting result as NetCDF files.",
             self.workdir,
-            output_uris
+            output_uris,
         )
 
         populate_response(response, "subset", self.workdir, inputs, collection, ml4)

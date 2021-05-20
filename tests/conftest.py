@@ -1,6 +1,5 @@
 import os
 import pytest
-import shutil
 
 from git import Repo
 
@@ -9,6 +8,7 @@ from tests.common import write_roocs_cfg, MINI_CEDA_CACHE_DIR, MINI_CEDA_CACHE_B
 CEDA_TEST_DATA_REPO_URL = "https://github.com/cedadev/mini-ceda-archive"
 
 write_roocs_cfg()
+
 
 @pytest.fixture
 def load_ceda_test_data():
