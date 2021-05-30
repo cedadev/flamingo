@@ -37,24 +37,6 @@ VARIABLE_ALLOWED_VALUES = {
 }
 
 
-DATASET_ALLOWED_VALUES = {
-    "Climatic Research Unit (CRU) TS (time-series) datasets 4.04": "cru_ts.4.04"
-}
-
-VARIABLE_ALLOWED_VALUES = {
-    "precipitation (mm/month)": "pre",
-    "near-surface temperature (degrees Celsius)": "tmp",
-    "near-surface temperature maximum (degrees Celsius)": "tmx",
-    "potential evapotranspiration (mm/day)": "pet",
-    "ground frost frequency (days)": "frs",
-    "cloud cover (percentage)": "cld",
-    "wet day frequency (days)": "wet",
-    "diurnal temperature range (degrees Celsius)": "dtr",
-    "vapour pressure (hPa)": "vap",
-    "near-surface temperature minimum (degrees Celsius)": "tmn",
-}
-
-
 class SubsetCRUTS(Process):
     def __init__(self):
         inputs = [
