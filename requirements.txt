@@ -1,3 +1,4 @@
+owslib
 pywps
 jinja2
 click
