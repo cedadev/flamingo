@@ -11,7 +11,7 @@ file_type_map = {
 
 def build_metalink(identity, description, workdir, file_uris, file_type):
     ml4 = MetaLink4(identity, description, workdir=workdir)
-    file_desc = f"{file_type} file"
+    file_desc = f"{file_type.upper()} file"
 
     # Add file paths or URLs
     for file_uri in file_uris:
