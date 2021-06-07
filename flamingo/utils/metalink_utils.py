@@ -3,10 +3,13 @@ from urllib.parse import urlparse
 from pywps.inout.outputs import MetaFile, MetaLink4
 from pywps import FORMATS
 
-file_type_map = {"NetCDF": FORMATS.NETCDF}
+file_type_map = {
+    "netcdf": FORMATS.NETCDF,
+    "csv": FORMATS.TEXT
+}
 
 
-def build_metalink(identity, description, workdir, file_uris, file_type="NetCDF"):
+def build_metalink(identity, description, workdir, file_uris, file_type):
     ml4 = MetaLink4(identity, description, workdir=workdir)
     file_desc = f"{file_type} file"
 

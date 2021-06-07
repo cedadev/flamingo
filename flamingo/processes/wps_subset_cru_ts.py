@@ -89,7 +89,7 @@ class SubsetCRUTS(Process):
             ComplexOutput(
                 "output",
                 "METALINK v4 output",
-                abstract="Metalink v4 document with references to NetCDF files.",
+                abstract="Metalink v4 document with references to output files.",
                 as_reference=True,
                 supported_formats=[FORMATS.META4],
             ),
@@ -159,10 +159,8 @@ class SubsetCRUTS(Process):
             "collection": collection,
             "time": parse_wps_input(request.inputs, "timeDateRange", default=None),
             "area": parse_wps_input(request.inputs, "area", default=None),
-            #            "apply_fixes": False,
             "output_dir": self.workdir,
             "file_namer": "simple",
-
             "output_type": output_type
         }
 
@@ -189,9 +187,10 @@ class SubsetCRUTS(Process):
                 
         ml4 = build_metalink(
             "subset-cru_ts-result",
-            "Subsetting result as NetCDF files.",
+            "Subsetting result into output file(s).",
             self.workdir,
             output_uris,
+            output_format 
         )
 
         populate_response(response, "subset", self.workdir, inputs, collection, ml4)
