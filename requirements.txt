@@ -6,11 +6,11 @@ psutil
 networkx
 xarray>=0.15
 dask[complete]
-git+https://github.com/cedadev/nappy.git#egg=nappy
 netcdf4
 python-dateutil>=2.8.1
 #daops>=0.3.0
 #clisops>=0.4.0
 #roocs-utils>=0.1.5
+#nappy
 prov>=2.0.0
 pydot
