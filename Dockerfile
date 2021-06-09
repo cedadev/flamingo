@@ -1,7 +1,7 @@
 # vim:set ft=dockerfile:
 FROM continuumio/miniconda3
 MAINTAINER https://github.com/cedadev/flamingo
-LABEL Description="flamingo WPS" Vendor="Birdhouse" Version="0.2.0"
+LABEL Description="flamingo WPS" Vendor="Birdhouse" Version="0.1.0"
 
 # Update Debian system
 RUN apt-get update && apt-get install -y \

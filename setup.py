@@ -52,8 +52,6 @@ setup(
     include_package_data=True,
     install_requires=[
         reqs,
-        "roocs-utils @ git+https://github.com/roocs/roocs-utils.git",
-        "clisops @ git+https://github.com/roocs/clisops.git",
         "daops @ git+https://github.com/roocs/daops.git",
         "nappy @ git+https://github.com/cedadev/nappy.git",
     ],
