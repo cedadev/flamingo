@@ -115,7 +115,7 @@ class SubsetCRUTS(Process):
             self._handler,
             identifier="SubsetCRUTimeSeries",
             title="Subset CRU Time Series",
-            abstract="Run subsetting on CRU Time Series data",
+            abstract="Extract a subset from the CRU Time Series data",
             keywords=[
                 "subset",
                 "climate",
