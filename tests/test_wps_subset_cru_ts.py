@@ -38,7 +38,7 @@ def test_wps_subset_cru_ts(load_ceda_test_data):
     assert "meta4" in get_output(resp.xml)["output"]
 
 
-def test_wps_subset_cru_ts_csv(load_ceda_test_data):
+def test_wps_subset_cru_ts_csv_tasmin(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
     datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=near-surface temperature minimum (degrees Celsius);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
     resp = client.get(
@@ -48,7 +48,7 @@ def test_wps_subset_cru_ts_csv(load_ceda_test_data):
     assert "meta4" in get_output(resp.xml)["output"]
 
 
-def test_wps_subset_cru_ts_csv(load_ceda_test_data):
+def test_wps_subset_cru_ts_csv_wet(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
     datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
     resp = client.get(
@@ -56,6 +56,37 @@ def test_wps_subset_cru_ts_csv(load_ceda_test_data):
     )
     assert_response_success(resp)
     assert "meta4" in get_output(resp.xml)["output"]
+
+
+def test_wps_subset_cru_ts_csv_check_global_attrs(load_ceda_test_data):
+    client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
+    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
+    resp = client.get(
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
+    )
+    assert_response_success(resp)
+    assert "meta4" in get_output(resp.xml)["output"]
+
+    output_file = get_output(resp.xml)["output"][7:]  # trim off 'file://'
+
+    tree = ET.parse(output_file)
+    root = tree.getroot()
+
+    file_tag = root.find("{urn:ietf:params:xml:ns:metalink}file")
+    csv_output_file = file_tag.find("{urn:ietf:params:xml:ns:metalink}metaurl").text[7:]
+
+
+    # :Conventions = "CF-1.4" ;
+    # :title = "CRU TS4.04 Rain Days" ;
+    content = open(csv_output_file).read()
+    assert "Conventions" in content #) == "CF-1.4"
+    assert "CF-1.4" in content
+    assert "CRU TS4.04 Rain Days" in content
+
+    assert "History:  20" in content
+    assert "Converted to NASA Ames format using nappy" in content
+    assert "ncks -d lat,,,100 -d lon,,,100 --variable wet /badc/cru/data/cru_ts/cru_ts_4.04/data/wet/cru_ts4.04.1901.2019.wet.dat.nc" in content
+    assert "BST : User ianharris : Program makegridsauto.for called by update.for" in content
 
 
 @pytest.mark.parametrize("variable,start_date,end_date,area,output_type", TEST_SETS)

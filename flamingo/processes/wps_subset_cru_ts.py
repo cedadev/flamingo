@@ -176,7 +176,7 @@ class SubsetCRUTS(Process):
             for result_list in results._results.values():
               
                 for ds in result_list:
-                    xr_to_na = XarrayDatasetToNA(ds) 
+                    xr_to_na = XarrayDatasetToNA(ds)
                     xr_to_na.convert()
 
                     output_file = os.path.join(self.workdir, f"output_{i:02d}.csv")
