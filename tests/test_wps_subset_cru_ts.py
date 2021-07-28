@@ -27,10 +27,31 @@ TEST_SETS = [
     ),
 ]
 
-
-def test_wps_subset_cru_ts(load_ceda_test_data):
+def test_wps_subset_cru_ts_4_05(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=netcdf"
+    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) dataset 4.05;variable=wet day frequency (days);timeDateRange=2001-01-01/2020-12-30;area=1,1,300,89;output_type=netcdf"
+    resp = client.get(
+        f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
+    )
+    assert_response_success(resp)
+    assert "meta4" in get_output(resp.xml)["output"]
+
+    output_file = get_output(resp.xml)["output"][7:]  # trim off 'file://'
+
+    tree = ET.parse(output_file)
+    root = tree.getroot()
+
+    file_tag = root.find("{urn:ietf:params:xml:ns:metalink}file")
+    nc_file = file_tag.find("{urn:ietf:params:xml:ns:metalink}metaurl").text[7:]
+
+    ds = xr.open_dataset(nc_file, use_cftime=True, decode_timedelta=False)
+    assert np.isclose(float(ds.wet.max()), 23.48, atol=.005)
+
+
+
+def test_wps_subset_cru_ts_4_04(load_ceda_test_data):
+    client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
+    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) dataset 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=netcdf"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
@@ -38,9 +59,9 @@ def test_wps_subset_cru_ts(load_ceda_test_data):
     assert "meta4" in get_output(resp.xml)["output"]
 
 
-def test_wps_subset_cru_ts_csv_tasmin(load_ceda_test_data):
+def test_wps_subset_cru_ts_4_04_csv_tasmin(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=near-surface temperature minimum (degrees Celsius);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
+    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) dataset 4.04;variable=near-surface temperature minimum (degrees Celsius);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
@@ -48,9 +69,9 @@ def test_wps_subset_cru_ts_csv_tasmin(load_ceda_test_data):
     assert "meta4" in get_output(resp.xml)["output"]
 
 
-def test_wps_subset_cru_ts_csv_wet(load_ceda_test_data):
+def test_wps_subset_cru_ts_4_04_csv_wet(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
+    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) dataset 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
@@ -58,9 +79,9 @@ def test_wps_subset_cru_ts_csv_wet(load_ceda_test_data):
     assert "meta4" in get_output(resp.xml)["output"]
 
 
-def test_wps_subset_cru_ts_csv_check_global_attrs(load_ceda_test_data):
+def test_wps_subset_cru_ts_4_04_csv_check_global_attrs(load_ceda_test_data):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
+    datainputs = "dataset_version=Climatic Research Unit (CRU) TS (time-series) dataset 4.04;variable=wet day frequency (days);timeDateRange=1951-01-01/2005-12-15;area=1,1,300,89;output_type=csv"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
@@ -90,11 +111,11 @@ def test_wps_subset_cru_ts_csv_check_global_attrs(load_ceda_test_data):
 
 
 @pytest.mark.parametrize("variable,start_date,end_date,area,output_type", TEST_SETS)
-def test_wps_subset_cru_ts_check_nc_content(
+def test_wps_subset_cru_ts_4_04_check_nc_content(
     load_ceda_test_data, variable, start_date, end_date, area, output_type
 ):
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = f"dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable={variable};timeDateRange={start_date}/{end_date};area={','.join(area)};output_type={output_type}"
+    datainputs = f"dataset_version=Climatic Research Unit (CRU) TS (time-series) dataset 4.04;variable={variable};timeDateRange={start_date}/{end_date};area={','.join(area)};output_type={output_type}"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )
@@ -136,7 +157,7 @@ def test_wps_subset_cru_ts_check_nc_content(
 
 
 @pytest.mark.parametrize("variable,start_date,end_date,area,output_type", TEST_SETS)
-def test_wps_subset_cru_ts_check_min_max(
+def test_wps_subset_cru_ts_4_04_check_min_max(
     load_ceda_test_data, variable, start_date, end_date, area, output_type
 ):
     data_path = f"{MINI_CEDA_CACHE_DIR}/{MINI_CEDA_CACHE_BRANCH}/archive/badc/cru/data/cru_ts/cru_ts_4.04/data/{VARIABLE_ALLOWED_VALUES[variable]}/*.nc"
@@ -157,7 +178,7 @@ def test_wps_subset_cru_ts_check_min_max(
     min_cld = ds_subset[VARIABLE_ALLOWED_VALUES[variable]].min(skipna=True)
 
     client = client_for(Service(processes=[SubsetCRUTS()], cfgfiles=[PYWPS_CFG]))
-    datainputs = f"dataset_version=Climatic Research Unit (CRU) TS (time-series) datasets 4.04;variable={variable};timeDateRange={start_date}/{end_date};area={','.join(area)};output_type={output_type}"
+    datainputs = f"dataset_version=Climatic Research Unit (CRU) TS (time-series) dataset 4.04;variable={variable};timeDateRange={start_date}/{end_date};area={','.join(area)};output_type={output_type}"
     resp = client.get(
         f"?service=WPS&request=Execute&version=1.0.0&identifier=SubsetCRUTimeSeries&datainputs={datainputs}"
     )

@@ -35,6 +35,16 @@ fixed_path_mappings =
     cru_ts.4.04.tmx:cru_ts_4.04/data/tmx/*.nc
     cru_ts.4.04.vap:cru_ts_4.04/data/vap/*.nc
     cru_ts.4.04.wet:cru_ts_4.04/data/wet/*.nc
+    cru_ts.4.05.cld:cru_ts_4.05/data/cld/cru_ts4.05.1901.2*.cld.dat.nc.gz
+    cru_ts.4.05.dtr:cru_ts_4.05/data/dtr/cru_ts4.05.1901.2*.dtr.dat.nc.gz
+    cru_ts.4.05.frs:cru_ts_4.05/data/frs/cru_ts4.05.1901.2*.frs.dat.nc.gz
+    cru_ts.4.05.pet:cru_ts_4.05/data/pet/cru_ts4.05.1901.2*.pet.dat.nc.gz
+    cru_ts.4.05.pre:cru_ts_4.05/data/pre/cru_ts4.05.1901.2*.pre.dat.nc.gz
+    cru_ts.4.05.tmn:cru_ts_4.05/data/tmn/cru_ts4.05.1901.2*.tmn.dat.nc.gz
+    cru_ts.4.05.tmp:cru_ts_4.05/data/tmp/cru_ts4.05.1901.2*.tmp.dat.nc.gz
+    cru_ts.4.05.tmx:cru_ts_4.05/data/tmx/cru_ts4.05.1901.2*.tmx.dat.nc.gz
+    cru_ts.4.05.vap:cru_ts_4.05/data/vap/cru_ts4.05.1901.2*.vap.dat.nc.gz
+    cru_ts.4.05.wet:cru_ts_4.05/data/wet/cru_ts4.05.1901.2*.wet.dat.nc.gz
 attr_defaults =
     frequency:mon
 facet_rule = project version_major version_minor variable

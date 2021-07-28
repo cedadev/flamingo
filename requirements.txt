@@ -11,6 +11,7 @@ python-dateutil>=2.8.1
 #daops>=0.3.0
 #clisops>=0.4.0
 #roocs-utils>=0.1.5
-#nappy
+nappy
 prov>=2.0.0
 pydot
+git+https://github.com/cedadev/ceda-wps-assets

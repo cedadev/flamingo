@@ -11,30 +11,29 @@ from pywps import (
     Format,
     ComplexOutput,
 )
-
 from pywps.app.Common import Metadata
 from pywps.app.exceptions import ProcessError
 
-from ..utils.input_utils import parse_wps_input
-from ..utils.metalink_utils import build_metalink
-from ..utils.response_utils import populate_response
+from flamingo.utils.input_utils import parse_wps_input
+from flamingo.utils.metalink_utils import build_metalink
+from flamingo.utils.response_utils import populate_response
 
-DATASET_ALLOWED_VALUES = {
-    "Climatic Research Unit (CRU) TS (time-series) datasets 4.04": "cru_ts.4.04"
-}
+# Load content information about datasets and inputs
+from ceda_wps_assets.flamingo import get_dset_info
 
-VARIABLE_ALLOWED_VALUES = {
-    "precipitation (mm/month)": "pre",
-    "near-surface temperature (degrees Celsius)": "tmp",
-    "near-surface temperature maximum (degrees Celsius)": "tmx",
-    "potential evapotranspiration (mm/day)": "pet",
-    "ground frost frequency (days)": "frs",
-    "cloud cover (percentage)": "cld",
-    "wet day frequency (days)": "wet",
-    "diurnal temperature range (degrees Celsius)": "dtr",
-    "vapour pressure (hPa)": "vap",
-    "near-surface temperature minimum (degrees Celsius)": "tmn",
-}
+dset_info = get_dset_info(__file__)
+
+DATASET_ALLOWED_VALUES = dset_info["input_datasets"]
+VARIABLE_ALLOWED_VALUES = dset_info["input_variables"]
+TIME_RANGE = dset_info["time_range"]
+BBOX = dset_info["bbox"]
+CATALOGUE_RECORDS = dset_info["catalogue_records"].items()
+
+PROCESS_METADATA = [
+    Metadata("CEDA WPS UI", "https://ceda-wps-ui.ceda.ac.uk"),
+    Metadata("CEDA WPS", "https://ceda-wps.ceda.ac.uk"),
+    Metadata("Disclaimer", "https://help.ceda.ac.uk/article/4642-disclaimer"),
+] + [Metadata(name, url) for name, url in CATALOGUE_RECORDS]
 
 
 class SubsetCRUTS(Process):
@@ -62,7 +61,7 @@ class SubsetCRUTS(Process):
                 "Time Period",
                 abstract="The time period to subset over.",
                 data_type="string",
-                default="1901-01-16/2019-12-16",
+                default=TIME_RANGE,
                 min_occurs=0,
                 max_occurs=1,
             ),
@@ -70,7 +69,7 @@ class SubsetCRUTS(Process):
                 "area",
                 "Area",
                 abstract="The area to subset over.",
-                crss=["-180.0, -90.0, 180.0, 90.0,epsg:4326"],
+                crss=[BBOX],
                 min_occurs=0,
                 max_occurs=1,
             ),
@@ -112,6 +111,7 @@ class SubsetCRUTS(Process):
         ]
 
         super(SubsetCRUTS, self).__init__(
+            
             self._handler,
             identifier="SubsetCRUTimeSeries",
             title="Subset CRU Time Series",
@@ -125,13 +125,7 @@ class SubsetCRUTS(Process):
                 "series",
                 "data",
             ],
-            metadata=[
-                Metadata("CEDA WPS UI", "https://ceda-wps-ui.ceda.ac.uk"),
-                Metadata("CEDA WPS", "https://ceda-wps.ceda.ac.uk"),
-                Metadata(
-                    "Disclaimer", "https://help.ceda.ac.uk/article/4642-disclaimer"
-                ),
-            ],
+            metadata=PROCESS_METADATA,
             version="1.0.0",
             inputs=inputs,
             outputs=outputs,
