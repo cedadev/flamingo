@@ -115,8 +115,8 @@ master_doc = "index"
 
 # General information about the project.
 project = "flamingo"
-copyright = "2020, Carsten Ehbrecht"
-author = "Carsten Ehbrecht"
+copyright = "2021, STFC"
+author = "Ag Stephens"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -210,7 +210,7 @@ latex_documents = [
         master_doc,
         "flamingo.tex",
         "flamingo Documentation",
-        "Carsten Ehbrecht",
+        "Ag Stephens",
         "manual",
     ),
 ]
