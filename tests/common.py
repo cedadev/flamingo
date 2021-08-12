@@ -31,27 +31,11 @@ def write_roocs_cfg():
     cfg_templ = """[project:cru_ts]
 base_dir = {{ ceda_base_dir }}/archive/badc/cru/data/cru_ts
 file_name_template = {__derive__var_id}_{frequency}_{__derive__time_range}.{__derive__extension}
+fixed_path_modifiers =
+    variable:cld dtr frs pet pre tmn tmp tmx vap wet
 fixed_path_mappings =
-    cru_ts.4.04.cld:cru_ts_4.04/data/cld/*.nc
-    cru_ts.4.04.dtr:cru_ts_4.04/data/dtr/*.nc
-    cru_ts.4.04.frs:cru_ts_4.04/data/frs/*.nc
-    cru_ts.4.04.pet:cru_ts_4.04/data/pet/*.nc
-    cru_ts.4.04.pre:cru_ts_4.04/data/pre/*.nc
-    cru_ts.4.04.tmn:cru_ts_4.04/data/tmn/*.nc
-    cru_ts.4.04.tmp:cru_ts_4.04/data/tmp/*.nc
-    cru_ts.4.04.tmx:cru_ts_4.04/data/tmx/*.nc
-    cru_ts.4.04.vap:cru_ts_4.04/data/vap/*.nc
-    cru_ts.4.04.wet:cru_ts_4.04/data/wet/*.nc
-    cru_ts.4.05.cld:cru_ts_4.05/data/cld/cru_ts4.05.1901.2*.cld.dat.nc.gz
-    cru_ts.4.05.dtr:cru_ts_4.05/data/dtr/cru_ts4.05.1901.2*.dtr.dat.nc.gz
-    cru_ts.4.05.frs:cru_ts_4.05/data/frs/cru_ts4.05.1901.2*.frs.dat.nc.gz
-    cru_ts.4.05.pet:cru_ts_4.05/data/pet/cru_ts4.05.1901.2*.pet.dat.nc.gz
-    cru_ts.4.05.pre:cru_ts_4.05/data/pre/cru_ts4.05.1901.2*.pre.dat.nc.gz
-    cru_ts.4.05.tmn:cru_ts_4.05/data/tmn/cru_ts4.05.1901.2*.tmn.dat.nc.gz
-    cru_ts.4.05.tmp:cru_ts_4.05/data/tmp/cru_ts4.05.1901.2*.tmp.dat.nc.gz
-    cru_ts.4.05.tmx:cru_ts_4.05/data/tmx/cru_ts4.05.1901.2*.tmx.dat.nc.gz
-    cru_ts.4.05.vap:cru_ts_4.05/data/vap/cru_ts4.05.1901.2*.vap.dat.nc.gz
-    cru_ts.4.05.wet:cru_ts_4.05/data/wet/cru_ts4.05.1901.2*.wet.dat.nc.gz
+    cru_ts.4.04.{variable}:cru_ts_4.04/data/{variable}/*.nc
+    cru_ts.4.05.{variable}:cru_ts_4.05/data/{variable}/cru_ts4.05.1901.2*.{variable}.dat.nc.gz
 attr_defaults =
     frequency:mon
 facet_rule = project version_major version_minor variable
@@ -60,9 +44,12 @@ facet_rule = project version_major version_minor variable
 base_dir = {{ ceda_base_dir }}/archive/badc/ukmo-hadobs/data/insitu/MOHC/HadOBS/HadUK-Grid
 file_name_template = {__derive__var_id}_hadukgrid_uk_{spatial_average}_{frequency}_{__derive__time_range}.{__derive__extension}
 facet_rule = project version_major version_minor version_patch version_extra spatial_average frequency variable version
+fixed_path_modifiers = 
+    variable:groundfrost pv rainfall sfcWind snowLying sun tas tasmin
+    frequency:mon
 fixed_path_mappings =
-    haduk_grid.v1.0.3.0.1km.mon.snowLying.v20210712:v1.0.3.0/1km/snowLying/mon/v20210712/*.nc
-    haduk_grid.v1.0.2.1.1km.mon.snowLying.v20200731:v1.0.2.1/1km/snowLying/mon/v20200731/*.nc
+    haduk_grid.v1.0.3.0.1km.{frequency}.{variable}.v20210712:v1.0.3.0/1km/{variable}/{frequency}/v20210712/*.nc
+    haduk_grid.v1.0.2.1.1km.{frequency}.{variable}.v20200731:v1.0.2.1/1km/{variable}/{frequency}/v20200731/*.nc
     """
 
     cfg = Template(cfg_templ).render(ceda_base_dir=(MINI_CEDA_CACHE_DIR / MINI_CEDA_CACHE_BRANCH))
