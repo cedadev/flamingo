@@ -1,7 +1,6 @@
 import os
 
 from daops.ops.subset import subset
-from nappy.nc_interface.xarray_to_na import XarrayDatasetToNA
 
 from pywps import (
     BoundingBoxInput,
@@ -16,6 +15,7 @@ from pywps.app.exceptions import ProcessError
 
 from flamingo.utils.input_utils import parse_wps_input
 from flamingo.utils.metalink_utils import build_metalink
+from flamingo.utils.output_utils import write_to_csvs
 from flamingo.utils.response_utils import populate_response
 
 # Load content information about datasets and inputs
@@ -206,21 +206,8 @@ class SubsetBase(Process):
         if output_type == "netcdf":
             output_uris = results.file_uris
         else:
-            # If CSV, then write them out using Nappy
-            output_uris = []
-            i = 1
-
-            for result_list in results._results.values():
-              
-                for ds in result_list:
-                    xr_to_na = XarrayDatasetToNA(ds)
-                    xr_to_na.convert()
-
-                    output_file = os.path.join(self.workdir, f"output_{i:02d}.csv")
-                    xr_to_na.writeNAFiles(output_file, delimiter=",", float_format="%g")
-                    output_uris.extend(xr_to_na.output_files_written)
-
-                    i += 1
+            # Output type must be: "csv"
+            output_uris = write_to_csvs(results, self.workdir)
                 
         ml4 = build_metalink(
             self.METALINK_ID,
