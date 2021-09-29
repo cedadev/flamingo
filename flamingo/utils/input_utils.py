@@ -1,8 +1,11 @@
 import os
 from pywps.app.exceptions import ProcessError
 
+from roocs_utils.parameter.param_utils import interval
 
-def parse_wps_input(inputs, key, as_sequence=False, must_exist=False, default=None):
+
+def parse_wps_input(inputs, key, as_interval=False, as_sequence=False, 
+                    must_exist=False, default=None):
 
     if not inputs.get(key):
         if must_exist:
@@ -12,12 +15,15 @@ def parse_wps_input(inputs, key, as_sequence=False, must_exist=False, default=No
     else:
         value = inputs[key]
 
-    if as_sequence:
-        return [dset.data for dset in value]
-
+    # Special issue for ranges
+    if as_interval:
+        value = interval(value[0].data)
+    elif as_sequence:
+        value = [dset.data for dset in value]
     else:
-        return value[0].data
+        value = value[0].data
 
+    return value
 
 def clean_inputs(inputs):
     "Remove common arguments not required in processing calls."

@@ -8,10 +8,13 @@ xarray>=0.15
 dask[complete]
 netcdf4
 python-dateutil>=2.8.1
+git+https://github.com/roocs/roocs-utils@subset-by-point 
+git+https://github.com/roocs/clisops@subset-by-point
+git+https://github.com/roocs/daops@subset-by-point
 #daops>=0.3.0
 #clisops>=0.4.0
 #roocs-utils>=0.1.5
-nappy @ git+https://github.com/cedadev/nappy#egg=nappy
+nappy 
 prov>=2.0.0
 pydot
 ceda-wps-assets @ git+https://github.com/cedadev/ceda-wps-assets#egg=ceda-wps-assets

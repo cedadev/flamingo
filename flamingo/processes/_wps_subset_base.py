@@ -194,20 +194,27 @@ class SubsetBase(Process):
 
         inputs = {
             "collection": collection,
-            "time": parse_wps_input(request.inputs, "timeDateRange", default=None),
+            "time": parse_wps_input(request.inputs, "timeDateRange", as_interval=True, 
+                                    default=None),
             "area": parse_wps_input(request.inputs, "area", default=None),
             "output_dir": self.workdir,
             "file_namer": "simple",
             "output_type": output_type
         }
 
-        results = subset(**inputs)
+        try:
+            results = subset(**inputs)
+        except Exception as exc:
+            raise ProcessError(f"An error was reported with this job as follows: {str(exc)}")
 
         if output_type == "netcdf":
             output_uris = results.file_uris
         else:
-            # Output type must be: "csv"
-            output_uris = write_to_csvs(results, self.workdir)
+            try:
+                # Output type must be: "csv"
+                output_uris = write_to_csvs(results, self.workdir)
+            except Exception as exc:
+                raise ProcessError(f"An error occurred when converting to CSV: {str(exc)}")
                 
         ml4 = build_metalink(
             self.METALINK_ID,
