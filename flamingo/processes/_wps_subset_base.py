@@ -199,7 +199,8 @@ class SubsetBase(Process):
             "area": parse_wps_input(request.inputs, "area", default=None),
             "output_dir": self.workdir,
             "file_namer": "simple",
-            "output_type": output_type
+            "output_type": output_type,
+            "apply_fixes": False
         }
 
         try:
