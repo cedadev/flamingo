@@ -10,7 +10,7 @@ netcdf4
 python-dateutil>=2.8.1
 roocs-utils @ git+https://github.com/roocs/roocs-utils
 clisops @ git+https://github.com/roocs/clisops
-daops @ git+https://github.com/roocs/daops
+daops @ git+https://github.com/roocs/daops.git
 #daops>=0.3.0
 #clisops>=0.4.0
 #roocs-utils>=0.1.5
