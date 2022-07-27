@@ -162,7 +162,7 @@ https://conda.anaconda.org/conda-forge/noarch/pyopenssl-22.0.0-pyhd8ed1ab_0.tar.
 https://conda.anaconda.org/conda-forge/noarch/xarray-2022.6.0-pyhd8ed1ab_0.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/gtk2-2.24.33-h90689f9_2.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/librsvg-2.54.4-h7abd40a_0.tar.bz2
-https://conda.anaconda.org/conda-forge/noarch/urllib3-1.26.10-pyhd8ed1ab_0.tar.bz2
+https://conda.anaconda.org/conda-forge/noarch/urllib3-1.26.11-pyhd8ed1ab_0.tar.bz2
 https://conda.anaconda.org/conda-forge/noarch/distributed-2022.7.1-pyhd8ed1ab_0.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/graphviz-5.0.0-h5abf519_0.tar.bz2
 https://conda.anaconda.org/conda-forge/noarch/dask-2022.7.1-pyhd8ed1ab_0.tar.bz2
