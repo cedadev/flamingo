@@ -36,6 +36,7 @@ fixed_path_modifiers =
 fixed_path_mappings =
     cru_ts.4.04.{variable}:cru_ts_4.04/data/{variable}/*.nc
     cru_ts.4.05.{variable}:cru_ts_4.05/data/{variable}/cru_ts4.05.1901.2*.{variable}.dat.nc.gz
+    cru_ts.4.06.{variable}:cru_ts_4.06/data/{variable}/cru_ts4.06.1901.2*.{variable}.dat.nc.gz
 attr_defaults =
     frequency:mon
 facet_rule = project version_major version_minor variable
