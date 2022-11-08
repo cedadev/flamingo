@@ -26,6 +26,15 @@ TEST_SETS = [
     ),
 ]
 
+
+def test_wps_subset_cru_ts_4_06(load_ceda_test_data):
+    data_inputs = ("dataset_version=Climatic Research Unit (CRU) TS (time-series) dataset 4.06;"
+                  "variable=wet day frequency (days);timeDateRange=2001-01-01/2021-06-30;"
+                  "area=1,1,300,89;output_type=netcdf")
+    ds = _common_wps_process_test(PROC_CLASS, data_inputs)
+    assert np.isclose(float(ds.wet.max()), 25.52, atol=.005)
+
+
 def test_wps_subset_cru_ts_4_05(load_ceda_test_data):
     data_inputs = ("dataset_version=Climatic Research Unit (CRU) TS (time-series) dataset 4.05;"
                   "variable=wet day frequency (days);timeDateRange=2001-01-01/2020-12-30;"
