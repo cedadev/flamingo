@@ -1,8 +1,7 @@
 import os
 from pywps.app.exceptions import ProcessError
 
-from roocs_utils.parameter.param_utils import interval
-
+from clisops.parameter._utils import interval
 
 def parse_wps_input(inputs, key, as_interval=False, as_sequence=False, 
                     must_exist=False, default=None):
