@@ -21,6 +21,8 @@ from flamingo.utils.response_utils import populate_response
 # Load content information about datasets and inputs
 from ceda_wps_assets.flamingo import get_dset_info
 
+import logging
+LOGGER = logging.getLogger("PYWPS")
 
 class SubsetInputFactory:
     """
@@ -184,6 +186,7 @@ class SubsetBase(Process):
 
     def _handler(self, request, response):
 
+        LOGGER.warning("Starting work...")
         output_format = parse_wps_input(request.inputs, "output_type", must_exist=True)
 
         output_type = output_format
@@ -203,11 +206,13 @@ class SubsetBase(Process):
             "apply_fixes": False
         }
 
+        LOGGER.warning("Beginning processing...")
         try:
             results = subset(**inputs)
         except Exception as exc:
             raise ProcessError(f"An error was reported with this job as follows: {str(exc)}")
 
+        LOGGER.warning("Wrote results")
         if output_type == "netcdf":
             output_uris = results.file_uris
         else:
@@ -225,6 +230,8 @@ class SubsetBase(Process):
             output_format 
         )
 
+        LOGGER.warning("Populating response object...")
         populate_response(response, "subset", self.workdir, inputs, collection, ml4)
 
+        LOGGER.warning("Returning response!")
         return response
